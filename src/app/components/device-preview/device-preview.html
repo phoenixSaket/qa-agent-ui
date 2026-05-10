@@ -1,6 +1,6 @@
 <div class="relative w-full aspect-[9/16] bg-black rounded-3xl overflow-hidden border-8 border-gray-900 shadow-2xl mx-auto max-w-[300px]">
     <!-- Screenshot Layer -->
-    <img *ngIf="socketService.screenshot()" [src]="'data:image/png;base64,' + socketService.screenshot()" class="absolute inset-0 w-full h-full object-cover" #screenshotImg>
+    <img *ngIf="socketService.screenshot()" [src]="getScreenshotSrc()" class="absolute inset-0 w-full h-full object-cover" #screenshotImg>
     <div *ngIf="!socketService.screenshot()" class="absolute inset-0 flex items-center justify-center text-gray-500 font-mono text-xs">Awaiting Screenshot...</div>
 
     <!-- XML Overlay Layer -->

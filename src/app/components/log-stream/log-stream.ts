@@ -19,6 +19,7 @@ export class LogStreamComponent {
     return logs.filter(log => log.type === filter);
   });
 
+  isCollapsed = false;
   @ViewChild('logContainer') logContainer!: ElementRef;
 
   constructor(public socketService: SocketService) {
@@ -42,5 +43,9 @@ export class LogStreamComponent {
   isError(message: string): boolean {
       const lower = message.toLowerCase();
       return lower.includes('error') || lower.includes('exception');
+  }
+
+  toggleCollapse() {
+      this.isCollapsed = !this.isCollapsed;
   }
 }

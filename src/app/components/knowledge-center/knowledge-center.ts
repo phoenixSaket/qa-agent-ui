@@ -13,6 +13,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class KnowledgeCenterComponent {
   markdownHtml = signal<SafeHtml>('');
+  isCollapsed = false;
 
   constructor(public socketService: SocketService, private sanitizer: DomSanitizer) {
     effect(() => {
@@ -30,5 +31,9 @@ export class KnowledgeCenterComponent {
   async renderMarkdown(data: string) {
       const parsed = await marked.parse(data);
       this.markdownHtml.set(this.sanitizer.bypassSecurityTrustHtml(parsed));
+  }
+
+  toggleCollapse() {
+      this.isCollapsed = !this.isCollapsed;
   }
 }
