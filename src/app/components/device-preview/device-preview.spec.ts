@@ -1,17 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DevicePreviewComponent } from './device-preview';
+import { SocketService } from '../../services/socket';
 
-import { DevicePreview } from './device-preview';
-
-describe('DevicePreview', () => {
-  let component: DevicePreview;
-  let fixture: ComponentFixture<DevicePreview>;
+describe('DevicePreviewComponent', () => {
+  let component: DevicePreviewComponent;
+  let fixture: ComponentFixture<DevicePreviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DevicePreview],
+      imports: [DevicePreviewComponent],
+      providers: [
+        {
+          provide: SocketService,
+          useValue: {
+            uiDump: () => '',
+            screenshot: () => '',
+            highlightTarget: () => null
+          }
+        }
+      ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DevicePreview);
+    fixture = TestBed.createComponent(DevicePreviewComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

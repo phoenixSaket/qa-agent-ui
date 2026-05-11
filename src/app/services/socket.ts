@@ -19,6 +19,8 @@ export class SocketService {
   uiDump = signal<string>('');
   screenshot = signal<string>('');
   agentThinking = signal<{chunk: string, step: number} | null>(null);
+  accumulatedThinking = signal<string>('');
+  currentThinkingStep = signal<number>(-1);
   fullPrompt = signal<{step: number, prompt: string, system: string | null} | null>(null);
   highlightTarget = signal<string | null>(null);
 
@@ -36,6 +38,11 @@ export class SocketService {
   private setupListeners() {
     this.socket.on('agent_message', (data: any) => {
       this.agentMessages.update(msgs => [...msgs, data]);
+      if (data.sender === 'agent') {
+        this.agentThinking.set(null);
+        this.accumulatedThinking.set('');
+        this.currentThinkingStep.set(-1);
+      }
     });
 
     this.socket.on('ui_dump', (data: {xml: string}) => {
@@ -48,6 +55,12 @@ export class SocketService {
 
     this.socket.on('agent_thinking', (data: {chunk: string, step: number}) => {
       this.agentThinking.set(data);
+      if (this.currentThinkingStep() !== data.step) {
+          this.currentThinkingStep.set(data.step);
+          this.accumulatedThinking.set(data.chunk);
+      } else {
+          this.accumulatedThinking.update(val => val + data.chunk);
+      }
     });
 
     this.socket.on('full_prompt', (data: {step: number, prompt: string, system: string | null}) => {

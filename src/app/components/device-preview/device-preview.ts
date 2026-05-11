@@ -16,6 +16,15 @@ export class DevicePreviewComponent {
 
   @ViewChild('screenshotImg') screenshotImg!: ElementRef;
 
+  getScreenshotSrc(): string {
+    const shot = this.socketService.screenshot();
+    if (!shot) return '';
+    if (shot.startsWith('data:image')) {
+      return shot;
+    }
+    return 'data:image/png;base64,' + shot;
+  }
+
   constructor(public socketService: SocketService) {
     effect(() => {
       const xml = this.socketService.uiDump();

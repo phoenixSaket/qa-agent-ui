@@ -1,17 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LogStreamComponent } from './log-stream';
+import { SocketService } from '../../services/socket';
 
-import { LogStream } from './log-stream';
-
-describe('LogStream', () => {
-  let component: LogStream;
-  let fixture: ComponentFixture<LogStream>;
+describe('LogStreamComponent', () => {
+  let component: LogStreamComponent;
+  let fixture: ComponentFixture<LogStreamComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogStream],
+      imports: [LogStreamComponent],
+      providers: [
+        {
+          provide: SocketService,
+          useValue: {
+            logs: () => []
+          }
+        }
+      ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LogStream);
+    fixture = TestBed.createComponent(LogStreamComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
